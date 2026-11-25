@@ -1,0 +1,27 @@
+const paths={
+ logo:'<path fill="currentColor" stroke="none" d="m1 9 23-7-9 19-4.2-7.3L20 5.3 8.5 12.8z"/><path fill="currentColor" opacity=".65" stroke="none" d="m8.8 14.3 2.1 3.9-2.9 3z"/>',
+ map:'<path d="m3 5 6-2 6 3 6-2v15l-6 2-6-3-6 2zM9 3v15m6-12v15"/>',
+ hangar:'<path d="m3 8 9-5 9 5v12H3zM7 20v-8h10v8M7 15h10"/>',
+ log:'<path d="M5 3h12l3 3v15H5zM9 9h6m-6 4h7m-7 4h5"/>',
+ audio:'<path d="M3 9h4l5-4v14l-5-4H3zm12-1q4 4 0 8m3-11q7 7 0 14"/>',
+ mute:'<path d="M3 9h4l5-4v14l-5-4H3zm13 0 6 6m0-6-6 6"/>',
+ settings:'<path d="m10 3-.6 2.2-2 .9-2-.6-2 3.3 1.5 1.6-.1 2.6-1.4 1.6 2 3.4 2.1-.6 2.1 1.2.5 2.1h4l.5-2.1 2-1.2 2.2.6 2-3.4-1.5-1.6v-2.4l1.5-1.8-2-3.3-2 .6-2.2-1-.5-2.1z"/><circle cx="12" cy="12" r="3"/>',
+ gem:'<path d="m12 2 8 10-8 10-8-10zM12 2v20M4 12h16"/>',
+ play:'<path fill="currentColor" stroke="none" d="M5 3.5c0-1 1.1-1.5 2-1L21 11c.8.5.8 1.6 0 2l-14 8.5c-.9.5-2 0-2-1z"/>',
+ help:'<circle cx="12" cy="12" r="9"/><path d="M9 9a3 3 0 0 1 6 0c0 2-3 2-3 5m0 2v.5"/>',
+ lock:'<rect x="5.5" y="10.5" width="13" height="10" rx="2"/><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5"/>',
+ left:'<path d="m14.5 6-6 6 6 6"/>',right:'<path d="m9 6 6 6-6 6"/>',down:'<path d="m6 9 6 6 6-6"/>',
+ compass:'<circle cx="12" cy="12" r="9"/><path d="m16 8-2.6 5.4L8 16l2.6-5.4z"/>',
+ layers:'<path d="m3 8 9-5 9 5-9 5zM3 12l9 5 9-5M3 16l9 5 9-5"/>',
+ keyboard:'<rect x="2" y="5" width="20" height="14" rx="2"/><path d="M5.5 9h.5m2.5 0h.5m2.5 0h.5m2.5 0h.5m2.5 0h.5M6 12h.5m3 0h.5m3 0h.5m3 0h.5M8 15h8"/>',
+ x:'<path d="m6 6 12 12m0-12L6 18"/>',check:'<path d="m4 12 5 5L20 6"/>',
+ pause:'<path stroke-width="4" d="M8 5v14m8-14v14"/>',timer:'<circle cx="12" cy="14" r="7.5"/><path d="M12 14V9m-3-6h6"/>',
+ wind:'<path d="M2 9h13a3 3 0 1 0-3-3M2 13h17a2.5 2.5 0 1 1-2.5 2.5M3 17h6"/>',
+ flag:'<path d="M5 21V4c5-3 9 3 15 0v10c-6 3-10-3-15 0"/>',
+ grid:'<rect x="3" y="4" width="7" height="7" rx="1"/><rect x="14" y="4" width="7" height="7" rx="1"/><rect x="3" y="15" width="7" height="5" rx="1"/><rect x="14" y="15" width="7" height="5" rx="1"/>',
+ trophy:'<path d="M7 3h10v5c0 7-10 7-10 0zm0 2H3v3c0 3 2 4 5 4m9-7h4v3c0 2-2 4-5 4m-4 2v5m-4 2h8"/>',
+ infinity:'<path d="M12 12C6 2-2 8 3 14c4 6 10-8 15-6 7 1 3 15-6 4z"/>',
+ volume:'<path d="M4 14v5m5-10v10m5-13v13m5-16v16"/>',
+ globe:'<circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><path d="M3 12h18"/>'
+};
+export const icon=(name,size=20)=>'<svg width="'+size+'" height="'+size+'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+(paths[name]||'')+'</svg>';
