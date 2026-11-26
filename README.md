@@ -1,50 +1,329 @@
 # Paperly · Paper Plane Adventure
 
 [![CI](https://github.com/9harshithp/Paperly/actions/workflows/ci.yml/badge.svg)](https://github.com/9harshithp/Paperly/actions/workflows/ci.yml)
+![PixiJS](https://img.shields.io/badge/PixiJS-8.23.0-E91E63)
+![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?logo=javascript&logoColor=black)
+![WebRTC](https://img.shields.io/badge/Multiplayer-WebRTC-blue)
+![Release](https://img.shields.io/github/v/release/9harshithp/Paperly?include_prereleases)
 
-A standalone PixiJS 8.23.0 flight game reconstructed from public descriptions and imagery of Paperly. The game includes 15 named chapter routes, Story and Endless modes, two-pilot private races, 11 paper planes and seven skins. It stores the player's Quantum balance, equipment, chapter progress and flight history in the browser.
+A standalone PixiJS 8.23.0 browser-based flight game developed as a game engineering practice project.
 
-## Run locally
+The project explores real-time rendering, flight simulation, collision detection, chapter progression, browser-based persistence and peer-to-peer multiplayer.
 
-Use Node.js 20 or newer. Extract the ZIP, open the paperly directory, and run:
+## Features
 
-```sh
+- 15 chapter routes.
+- Story and Endless game modes.
+- Two-player private races.
+- 11 selectable paper planes and seven skins.
+- Flight physics and momentum.
+- Checkpoint and obstacle detection.
+- Boost mechanics and collectible rewards.
+- Aircraft selection and customization.
+- Chapter unlocking and progression.
+- Local flight history and personal records.
+- Keyboard and touchscreen controls.
+- Responsive game interface.
+- Synthesized sound effects.
+- Browser-based progress persistence.
+
+---
+
+## Technology Stack
+
+<div align="center">
+
+<img src="https://skillicons.dev/icons?i=js,html,css,nodejs,git,github,githubactions&theme=dark" alt="Technology stack"/>
+
+</div>
+
+| Layer | Technology |
+|---|---|
+| Graphics rendering | PixiJS 8.23.0 |
+| Game simulation | JavaScript |
+| User interface | HTML5, CSS3, JavaScript |
+| Multiplayer | WebRTC |
+| Persistence | Browser storage |
+| Audio | Synthesized sound effects |
+| Runtime | Node.js 20+ |
+| Unit testing | Node.js test suite |
+| Browser testing | Playwright |
+| Continuous integration | GitHub Actions |
+
+---
+
+## Game Architecture
+
+Paperly uses PixiJS v8 for rendering, JavaScript-based flight simulation and a browser-based interface for game navigation.
+
+```mermaid
+flowchart TB
+    U["Player"] --> I["Input Handling"]
+    U --> UI["HTML / CSS / JavaScript Interface"]
+
+    UI --> G["Game State Manager"]
+    I --> S["Flight Simulation"]
+    G --> S
+
+    S --> P["Flight Physics"]
+    S --> C["Checkpoint and Collision Detection"]
+    S --> T["Timer and Progression"]
+
+    P --> R["PixiJS Renderer"]
+    C --> R
+    T --> G
+
+    R --> V["Game Canvas"]
+    G --> UI
+    G --> LS[("Browser Storage")]
+```
+
+### Game Loop
+
+```mermaid
+flowchart TD
+    A["Start Frame"] --> B["Read Player Input"]
+    B --> C["Update Flight Simulation"]
+    C --> D["Evaluate Collisions and Checkpoints"]
+    D --> E["Update Game State and Timer"]
+    E --> F["Render Scene"]
+    F --> G{"Flight Finished?"}
+    G -->|No| A
+    G -->|Yes| H["Display Flight Result"]
+```
+
+### Game State Transitions
+
+```mermaid
+stateDiagram-v2
+    [*] --> ChapterSelection
+    ChapterSelection --> Flight
+    Flight --> Paused
+    Paused --> Flight
+    Flight --> Completed
+    Flight --> Failed
+    Failed --> Flight: Retry
+    Completed --> ChapterSelection
+    Paused --> ChapterSelection
+```
+
+### Multiplayer Architecture
+
+```mermaid
+flowchart TB
+    A["Host Browser"] --> W["WebRTC Connection"]
+    B["Guest Browser"] --> W
+    S["STUN Service"] -.-> A
+    S -.-> B
+    W --> D["Peer-to-Peer Race Messages"]
+    D --> A
+    D --> B
+```
+
+Private races use WebRTC for peer-to-peer communication. Invitation and answer codes establish the connection between players. Some networks require a TURN relay.
+
+### Engineering Design
+
+| Design decision | Purpose |
+|---|---|
+| PixiJS v8 | Real-time graphics rendering |
+| Fixed-step simulation | Consistent simulation updates |
+| Flight physics | Aircraft movement, momentum and steering |
+| Game loop | Continuous simulation and rendering |
+| Collision detection | Checkpoint and obstacle interactions |
+| Chapter configuration | Data-driven environment management |
+| Game state management | Flight, pause and completion states |
+| Browser storage | Persistent local player progression |
+| WebRTC | Peer-to-peer private racing |
+| Modular JavaScript | Separation of simulation, rendering and interface logic |
+| Playwright | Automated browser smoke testing |
+
+---
+
+## Repository Structure
+
+| File | Responsibility |
+|---|---|
+| `dist/js/data.js` | Chapter configuration, terrain, aircraft attributes, prices and skins |
+| `dist/js/sim.js` | Fixed-step flight simulation, collisions, momentum, boost and scoring |
+| `dist/js/world.js` | Perspective projection, terrain rendering, aircraft and pickups |
+| `dist/js/main.js` | Menus, input handling, pause, results and progression |
+| `dist/js/race.js` | WebRTC connection and private race messages |
+| `dist/js/sound.js` | Synthesized wind and pickup sounds |
+| `dist/style.css` | Game styling and responsive interface |
+| `dist/index.html` | Application entry point |
+| `tools/landscapes.py` | Optional panorama generation using Python, NumPy and Pillow |
+
+---
+
+## Run Locally
+
+### Prerequisites
+
+- Node.js 20 or newer.
+- Modern browser with WebGL support.
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/9harshithp/Paperly.git
+cd Paperly
+```
+
+### 2. Start the Application
+
+```bash
 npm start
 ```
 
-Open <http://localhost:8080>. The project bundles PixiJS, fonts and artwork and requires no package installation. To serve it from an existing static host, deploy the contents of `dist/` at the site root. WebRTC private races use a STUN service for peer discovery.
+### 3. Open the Game
 
-## Play
+http://localhost:8080
 
-Press Space to launch from chapter select. W/S or the up/down arrows control climb and dive. A/D or the left/right arrows steer horizontally. Hold Shift to boost and press Escape to pause a solo flight. On touch screens, choose a joystick or direction buttons in Settings. 
+The project bundles PixiJS, fonts and artwork.
 
-Story and Private Race start with nine seconds. Fly through every gold checkpoint to replenish the clock, then through the lime finish ring. The plane slows during an off-center finish approach so you can steer into the opening. Quantum crystals are optional. Endless opens every landscape immediately and extends it beyond the story finish. Purple Quantum crystals buy new planes and skins in Hangar. Rings award time or wind. A chapter finish also awards Quantum. Settings, records and purchases are specific to the browser and site origin.
+For static hosting, deploy the contents of `dist/` at the website root.
 
-For a private race, both pilots open the game, choose Private race, then exchange invitation and answer codes. The host selects the chapter and launches. The other plane appears when it is in view. Some networks require a TURN relay. This project does not bundle relay credentials or a hosted matchmaking service.
+---
 
-## Edit the project
+## Game Controls
 
-| File | What to change |
-| --- | --- |
-| `dist/js/data.js` | Chapter names, lengths, terrain, obstacles, pickup positions, aircraft attributes, prices and skins |
-| `dist/js/sim.js` | Fixed-step flight, collision detection, momentum, boost and scoring |
-| `dist/js/world.js` | Perspective projection, visible terrain, aircraft, wind trails and pickups |
-| `dist/js/main.js` | Menus, inputs, pause, results and saved progression |
-| `dist/js/race.js` | WebRTC connection and private race messages |
-| `dist/js/sound.js` | Synthesized wind and pickup sounds |
-| `dist/style.css`, `dist/index.html` | Game screen and responsive interface |
-| `tools/landscapes.py` | Optional deterministic panorama generator using Python, NumPy and Pillow |
+| Input | Action |
+|---|---|
+| Space | Launch flight |
+| W / Up Arrow | Climb |
+| S / Down Arrow | Dive |
+| A / Left Arrow | Steer left |
+| D / Right Arrow | Steer right |
+| Shift | Boost |
+| Escape | Pause solo flight |
 
-Run `npm test` for simulation checks. The tests cover all 15 story finishes using the starter plane, collision outcomes, pickups, momentum, boost and endless flight.
+Touchscreen players can choose joystick or directional controls in Settings.
 
-## Reference and fidelity
+## Game Modes
 
-The CrazyGames listing documents 11 worlds, 11 unlockable aircraft, seven skins, the flight controls and the core pickup mechanics. A public web guide identifies the opening tutorial and 14 additional chapter names. The developer's press kit describes Story and Endless modes.
+| Mode | Description |
+|---|---|
+| Story | Chapter-based flight progression |
+| Endless | Extended flight through available environments |
+| Private Race | Two-player peer-to-peer racing |
+
+## Player Progression
+
+The browser stores player-specific information, including:
+
+- Quantum balance.
+- Unlocked aircraft.
+- Equipped aircraft and skins.
+- Completed chapters.
+- Personal best records.
+- Flight history.
+- Achievement progression.
+- Game settings.
+
+Progress is specific to the browser and website origin.
+
+---
+
+## Private Multiplayer Races
+
+1. Both players open the application.
+2. Select Private Race.
+3. Exchange the invitation and answer codes.
+4. The host selects the chapter.
+5. Launch the race.
+
+Private races support two tabs in the same browser through a local channel. Direct play across separate networks requires a viable WebRTC connection.
+
+A hosted matchmaking service and TURN relay credentials are outside the current implementation.
+
+---
+
+## Testing and Continuous Integration
+
+### Unit Tests
+
+```bash
+npm test
+```
+
+Simulation coverage includes:
+
+- Flight movement and momentum.
+- Chapter completion.
+- Collision outcomes.
+- Checkpoint interactions.
+- Pickups and boost.
+- Endless flight behavior.
+
+### Browser Smoke Tests
+
+```bash
+npm run test:e2e
+```
+
+### Current Testing Status
+
+| Check | Reported result |
+|---|---|
+| Playwright smoke tests | 4/4 passed locally |
+| Simulation unit tests | 9/10 passed during local debugging |
+| GitHub Actions CI | Configured |
+| Timed chapter simulation test | Under investigation |
+
+The latest reported CI run failed on a timed chapter simulation test. CI remediation is currently on hold.
+
+[View GitHub Actions workflow](https://github.com/9harshithp/Paperly/actions)
+
+---
+
+## Development Roadmap
+
+- [x] PixiJS rendering
+- [x] Flight simulation
+- [x] Chapter progression
+- [x] Aircraft selection
+- [x] Browser-based persistence
+- [x] Private multiplayer prototype
+- [x] Playwright smoke tests
+- [x] GitHub Actions configuration
+- [ ] Resolve remaining simulation test failure
+- [ ] Multiplayer reliability improvements
+- [ ] Public deployment
+
+---
+
+## References and Attribution
+
+This independent educational project draws inspiration from Paperly: Paper Plane Adventure.
 
 - [CrazyGames browser listing](https://www.crazygames.com/game/paperly-paper-plane-adventure)
 - [Developer press kit](https://abhitechgames.com/paperlypresskit/)
-- [Public web gameplay guide](https://www.bubbleshooter.net/game/paperly-paper-plane-adventure/)
+- [Public gameplay guide](https://www.bubbleshooter.net/game/paperly-paper-plane-adventure/)
 
-The landscape artwork, aircraft illustrations, menus, terrain coordinates, route ordering after the tutorial, physics constants, prices and race connection flow are reconstructions. The project does not contain the original Unity scenes, original leaderboard services, or advertising integrations. PixiJS and font license notices are included beside the bundled files.
+The original Paperly game belongs to its respective creators.
 
-The Flight log also shows local chapter bests and achievement progress. Private races support two tabs in the same browser through a local channel. Direct play across separate networks requires a viable WebRTC connection.
+This repository is an educational implementation for exploring game development concepts. PixiJS and font license notices are included alongside the bundled files.
+
+---
+
+## Contributing
+
+Suggestions, bug reports and technical improvements are welcome through GitHub issues and pull requests.
+
+---
+
+## Developer
+
+<div align="center">
+
+### Harshith P
+
+Backend Engineer | Full Stack Developer | Game Development
+
+[![GitHub](https://img.shields.io/badge/GitHub-9harshithp-181717?style=for-the-badge&logo=github)](https://github.com/9harshithp)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Harshith_P-0A66C2?style=for-the-badge&logo=linkedin)](https://www.linkedin.com/in/harshithp914)
+[![Portfolio](https://img.shields.io/badge/Portfolio-Visit_Website-6366F1?style=for-the-badge)](https://portfolio-bay-three-10.vercel.app/)
+[![Email](https://img.shields.io/badge/Email-Contact_Me-EA4335?style=for-the-badge&logo=gmail)](mailto:harshithp914@gmail.com)
+
+</div>
