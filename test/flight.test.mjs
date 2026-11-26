@@ -26,16 +26,30 @@ test('ground, obstacles and time end a flight',()=>{
  const t=newRun(chapters[0],planes[0],'endless');t.time=.002;step(t,neutral,1/60);assert.equal(t.end,'Out of time');
 });
 test('each timed chapter can be cleared without boost by steering through the checkpoints',()=>{
+ const pd=(c,m,ox,oy)=>{
+  const idx=Math.min(c.cursor,m.length-2),a=m[idx],b=m[idx+1],n=m[Math.min(idx+2,m.length-1)];
+  const t=clamp((c.z+8-a.z)/(b.z-a.z),0,1),lead=clamp((c.z+16-b.z)/16,0,1)*.25;
+  return {x:clamp((a.x+(b.x-a.x)*t+(n.x-b.x)*lead+ox-c.x)*.55-c.vx*.18,-1,1),y:clamp((a.y+(b.y-a.y)*t+oy-c.y)*.50-c.vy*.14,-1,1),boost:false};
+ };
+ const safe=(s,m,ox,oy,strict)=>{
+  const c={...s};
+  for(let k=0;k<110&&!c.end;k++)step(c,pd(c,m,k<36?ox:0,k<36?oy:0),1/60);
+  return (!c.end||c.end==='complete')&&(!strict||(c.rings-s.rings)===(c.cursor-s.cursor));
+ };
  for(const c of chapters){
   const s=newRun(c,planes[0],'story');
   const markers=[{x:0,y:17,z:0},...Array.from({length:s.requiredRings},(_,i)=>gate(c,i,true)),finishGate(c)];
+  let ox=0,oy=0,hold=0;
   for(let i=0;i<13000&&!s.end;i++){
-   const index=Math.min(s.cursor,markers.length-2);
-   const a=markers[index],b=markers[index+1];
-   const t=clamp((s.z+4-a.z)/(b.z-a.z),0,1);
-   const x=clamp((a.x+(b.x-a.x)*t-s.x)*.30,-1,1);
-   const y=clamp((a.y+(b.y-a.y)*t-s.y)*.37,-1,1);
-   step(s,{x,y,boost:false},1/60);
+   const b=markers[Math.min(s.cursor+1,markers.length-1)];
+   if(hold>0&&b.z-s.z>=20)hold--;else{hold=0;ox=0;oy=0;}
+   if(hold===0&&i%3===0&&!safe(s,markers,0,0,false)){
+    const d=b.x>=s.x?1:-1;
+    const alts=[[0,10],[0,14],[d*10,0],[-d*10,0],[d*10,8],[-d*10,8],[d*15,0],[-d*15,0]];
+    const hit=alts.find(([ax,ay])=>safe(s,markers,ax,ay,true))||alts.find(([ax,ay])=>safe(s,markers,ax,ay,false));
+    if(hit){[ox,oy]=hit;hold=36;}
+   }
+   step(s,pd(s,markers,ox,oy),1/60);
   }
   assert.equal(s.end,'complete',c.name+' '+s.end+' at '+s.z);
   assert.equal(s.rings,s.requiredRings);
