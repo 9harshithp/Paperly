@@ -1,5 +1,7 @@
 # Paperly · Paper Plane Adventure
 
+[![CI](https://github.com/9harshithp/Paperly/actions/workflows/ci.yml/badge.svg)](https://github.com/9harshithp/Paperly/actions/workflows/ci.yml)
+
 A standalone PixiJS 8.23.0 flight game reconstructed from public descriptions and imagery of Paperly. The game includes 15 named chapter routes, Story and Endless modes, two-pilot private races, 11 paper planes and seven skins. It stores the player's Quantum balance, equipment, chapter progress and flight history in the browser.
 
 ## Run locally

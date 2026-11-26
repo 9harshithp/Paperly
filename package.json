@@ -4,5 +4,12 @@
   "private": true,
   "type": "module",
   "description": "A PixiJS 8 paper-plane flight game",
-  "scripts": { "start": "node serve.mjs", "test": "node --test" }
+  "scripts": {
+    "start": "node serve.mjs",
+    "test": "node --test",
+    "test:e2e": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.65.1"
+  }
 }

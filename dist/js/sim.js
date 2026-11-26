@@ -28,7 +28,7 @@ const pitchTarget =
     clamp(input.y, -1, 1) * maxPitch;
 
 // Smooth aerodynamic response
-s.bank = approach(s.bank, rollTarget, 3.7);
+s.bank = approach(s.bank, rollTarget, 3.25);
 s.pitch = approach(s.pitch, pitchTarget, 2.8);
 
 // Lift increases with the square of airspeed
@@ -52,8 +52,8 @@ const lateralAcceleration =
     gravity *
     liftRatio *
     Math.sin(s.bank) *
-    2.6 -
-    s.vx * 0.85;
+    2.5 -
+    s.vx * 1.45;
 
 // Integrate acceleration into velocity
 s.vx = clamp(
